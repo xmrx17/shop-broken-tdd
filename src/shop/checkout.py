@@ -5,6 +5,8 @@ Both functions below are stubs: their signature is final, the bodies are yours.
 Do not change the constants: the tests rely on them.
 """
 
+from re import fullmatch
+
 from shop.money import percent_of
 
 PROMO_CODES = {"WELCOME10": 10, "SUMMER15": 15, "VIP35": 35}
@@ -31,7 +33,10 @@ def validate_order(
                 return f"Line {position} is missing required key: {key}."
         if line["sku"] == "":
             return "SKU must not be empty."
+        if fullmatch(r"[+-]?\d(?:_?\d)*", line["qty"].strip()) is None:
+            return "Quantity must be a whole number."
     ...
+    return None
 
 
 def calculate_order_total(
