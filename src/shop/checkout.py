@@ -61,6 +61,7 @@ def calculate_order_total(
     quantity = sum(int(line["qty"]) for line in lines)
     tier_percent = max((percent for threshold, percent in TIER_DISCOUNTS if quantity >= threshold), default=0)
     discount_percent = max(tier_percent, PROMO_CODES.get(promo_code, 0))
+    discount_percent = min(discount_percent, MAX_DISCOUNT_PERCENT)
     discounted_subtotal = subtotal - percent_of(subtotal, discount_percent)
     vat = percent_of(discounted_subtotal, VAT_PERCENT)
     return discounted_subtotal + vat
