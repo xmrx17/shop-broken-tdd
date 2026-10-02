@@ -44,7 +44,11 @@ complexity (13 > 9) and the remaining ellipsis. Refactoring extracted line
 validation, formatting was applied, and the final committed history passed the
 TDD checker (`e742d4ff` tests before `b8cb5afb` completed implementation).
 
-Local verification used Python 3.12.15. GitHub Actions also checks Python 3.13.
+Local verification used Python 3.12.15 and Python 3.13.16: 45 tests passed on
+each version, using dependencies exported from the frozen lockfile. Python 3.13
+was checked in a separate temporary environment without changing project files.
+GitHub Actions for PR #10 returned `action_required`: the upstream owner must
+approve the fork workflow runs before remote CI can execute.
 Historical failed GitHub runs could be listed but their logs returned
 `log not found`; they were not used as evidence of a specific code failure.
 
