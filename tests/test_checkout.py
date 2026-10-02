@@ -23,7 +23,7 @@ def line(sku: str = "SKU-1", qty: str = "1", unit_price_kopecks: str = "10000") 
 
 def test_smoke_single_line_without_delivery() -> None:
     """
-One line, no promo code, no delivery. Works out to 100.00 rub + 20% VAT."""
+    One line, no promo code, no delivery. Works out to 100.00 rub + 20% VAT."""
     assert validate_order([line()]) is None
     assert calculate_order_total([line()]) == 12_000
 
@@ -107,7 +107,9 @@ def test_tier_discount_at_highest_threshold() -> None:
 def test_promo_code_beats_tier_discount() -> None:
     """Spec 4, steps 3-4: the bigger percentage wins, the two do not add up."""
     assert calculate_order_total([line(qty="10")], "SUMMER15") == 102_000
-    assert calculate_order_total([line(qty="50", unit_price_kopecks="1990")], "WELCOME10") == 101_490
+    assert (
+        calculate_order_total([line(qty="50", unit_price_kopecks="1990")], "WELCOME10") == 101_490
+    )
 
 
 def test_discount_is_capped_at_thirty_percent() -> None:
@@ -122,15 +124,22 @@ def test_delivery_is_charged_for_small_order() -> None:
 
 def test_free_delivery_uses_discounted_subtotal() -> None:
     """Spec 4, step 7: the threshold is checked against the sum after the discount."""
-    assert calculate_order_total([line(unit_price_kopecks="500000")], shipping_city="msk") == 600_000
-    assert calculate_order_total([line(unit_price_kopecks="499999")], shipping_city="msk") == 658_799
+    assert (
+        calculate_order_total([line(unit_price_kopecks="500000")], shipping_city="msk") == 600_000
+    )
+    assert (
+        calculate_order_total([line(unit_price_kopecks="499999")], shipping_city="msk") == 658_799
+    )
     assert calculate_order_total([line(unit_price_kopecks="500000")], "WELCOME10", "msk") == 598_800
     assert calculate_order_total([line(qty="100")], "VIP35", "spb") == 840_000
 
 
 def test_vat_is_charged_on_the_discounted_sum() -> None:
     """Spec 4, steps 8-10: base = discounted subtotal + delivery."""
-    assert calculate_order_total([line(qty="50", unit_price_kopecks="1990")], "WELCOME10", "msk") == 160_290
+    assert (
+        calculate_order_total([line(qty="50", unit_price_kopecks="1990")], "WELCOME10", "msk")
+        == 160_290
+    )
     assert calculate_order_total([line(unit_price_kopecks="3")], "WELCOME10") == 4
 
 
