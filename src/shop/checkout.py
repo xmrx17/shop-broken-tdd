@@ -57,6 +57,8 @@ def calculate_order_total(
     shipping_city: str = "",
 ) -> int | None:
     """Return the order total in kopecks, or None if the order is invalid."""
+    if validate_order(lines, promo_code, shipping_city) is not None:
+        return None
     subtotal = sum(int(line["qty"]) * int(line["unit_price_kopecks"]) for line in lines)
     quantity = sum(int(line["qty"]) for line in lines)
     tier_percent = max((percent for threshold, percent in TIER_DISCOUNTS if quantity >= threshold), default=0)
