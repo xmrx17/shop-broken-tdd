@@ -41,6 +41,8 @@ def validate_order(
             return "Price must be a whole number."
         if int(line["unit_price_kopecks"]) < 0:
             return "Price must not be negative."
+        if any(previous["sku"] == line["sku"] for previous in lines[: position - 1]):
+            return "SKU must not be duplicated."
     ...
     return None
 
