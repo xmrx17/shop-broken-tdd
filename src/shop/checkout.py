@@ -45,6 +45,8 @@ def validate_order(
             return "SKU must not be duplicated."
     if promo_code and promo_code not in PROMO_CODES:
         return "Unknown promo code."
+    if shipping_city and shipping_city not in SUPPORTED_CITIES:
+        return "Unsupported shipping city."
     ...
     return None
 
