@@ -25,7 +25,10 @@ def validate_order(
     """Return a human readable reason why the order is invalid, or None if it is fine."""
     if not lines:
         return "Order must contain at least one line."
-    for line in lines:
+    for position, line in enumerate(lines, start=1):
+        for key in REQUIRED_LINE_KEYS:
+            if key not in line:
+                return f"Line {position} is missing required key: {key}."
         if line["sku"] == "":
             return "SKU must not be empty."
     ...
