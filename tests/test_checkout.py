@@ -22,7 +22,8 @@ def line(sku: str = "SKU-1", qty: str = "1", unit_price_kopecks: str = "10000") 
 
 
 def test_smoke_single_line_without_delivery() -> None:
-    """One line, no promo code, no delivery. Works out to 100.00 rub + 20% VAT."""
+    """
+One line, no promo code, no delivery. Works out to 100.00 rub + 20% VAT."""
     assert validate_order([line()]) is None
     assert calculate_order_total([line()]) == 12_000
 
@@ -39,7 +40,9 @@ def test_empty_sku_is_rejected() -> None:
 
 def test_missing_line_key_is_rejected() -> None:
     """Spec 3, rule 3: every required key must be present."""
-    ...
+    order_line = line()
+    del order_line["qty"]
+    assert validate_order([order_line])
 
 
 def test_non_numeric_quantity_is_rejected() -> None:
