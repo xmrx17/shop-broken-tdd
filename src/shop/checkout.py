@@ -58,5 +58,8 @@ def calculate_order_total(
 ) -> int | None:
     """Return the order total in kopecks, or None if the order is invalid."""
     subtotal = sum(int(line["qty"]) * int(line["unit_price_kopecks"]) for line in lines)
-    vat = percent_of(subtotal, VAT_PERCENT)
-    return subtotal + vat
+    quantity = sum(int(line["qty"]) for line in lines)
+    tier_percent = max((percent for threshold, percent in TIER_DISCOUNTS if quantity >= threshold), default=0)
+    discounted_subtotal = subtotal - percent_of(subtotal, tier_percent)
+    vat = percent_of(discounted_subtotal, VAT_PERCENT)
+    return discounted_subtotal + vat
