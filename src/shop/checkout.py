@@ -23,6 +23,8 @@ def validate_order(
     shipping_city: str = "",
 ) -> str | None:
     """Return a human readable reason why the order is invalid, or None if it is fine."""
+    if not lines:
+        return "Order must contain at least one line."
     ...
 
 
