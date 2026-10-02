@@ -132,3 +132,9 @@ def test_vat_is_charged_on_the_discounted_sum() -> None:
     """Spec 4, steps 8-10: base = discounted subtotal + delivery."""
     assert calculate_order_total([line(qty="50", unit_price_kopecks="1990")], "WELCOME10", "msk") == 160_290
     assert calculate_order_total([line(unit_price_kopecks="3")], "WELCOME10") == 4
+
+
+def test_invalid_order_has_no_total() -> None:
+    assert calculate_order_total([]) is None
+    assert calculate_order_total([line(qty="abc")]) is None
+    assert calculate_order_total([line()], "UNKNOWN") is None
