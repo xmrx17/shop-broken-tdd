@@ -43,6 +43,8 @@ def validate_order(
             return "Price must not be negative."
         if any(previous["sku"] == line["sku"] for previous in lines[: position - 1]):
             return "SKU must not be duplicated."
+    if promo_code and promo_code not in PROMO_CODES:
+        return "Unknown promo code."
     ...
     return None
 
