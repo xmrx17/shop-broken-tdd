@@ -60,6 +60,7 @@ def calculate_order_total(
     subtotal = sum(int(line["qty"]) * int(line["unit_price_kopecks"]) for line in lines)
     quantity = sum(int(line["qty"]) for line in lines)
     tier_percent = max((percent for threshold, percent in TIER_DISCOUNTS if quantity >= threshold), default=0)
-    discounted_subtotal = subtotal - percent_of(subtotal, tier_percent)
+    discount_percent = max(tier_percent, PROMO_CODES.get(promo_code, 0))
+    discounted_subtotal = subtotal - percent_of(subtotal, discount_percent)
     vat = percent_of(discounted_subtotal, VAT_PERCENT)
     return discounted_subtotal + vat
