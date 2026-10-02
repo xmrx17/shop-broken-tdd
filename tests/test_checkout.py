@@ -106,7 +106,8 @@ def test_tier_discount_at_highest_threshold() -> None:
 
 def test_promo_code_beats_tier_discount() -> None:
     """Spec 4, steps 3-4: the bigger percentage wins, the two do not add up."""
-    ...
+    assert calculate_order_total([line(qty="10")], "SUMMER15") == 102_000
+    assert calculate_order_total([line(qty="50", unit_price_kopecks="1990")], "WELCOME10") == 101_490
 
 
 def test_discount_is_capped_at_thirty_percent() -> None:
